@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<title></title>
+	</head>
+	<body>
+		<span class="timer_count_down"></span>
+	</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript">
+let now = new Date();
+let year = now.getFullYear();
+let month = now.getMonth()+1;
+let date = now.getDate();
+let hour = now.getHours();
+let min = now.getMinutes();
+let sec = now.getSeconds();
+
+let startDateTime = new Date(
+	year,month,date,hour,min,sec
+);
+let endDateTime = new Date(
+	year,month,date,hour,min,sec+10
+);
+$(document).ready(function(){
+	end_traning_countdown(startDateTime, endDateTime);
+});
+
+let end_traning_countdown = (startDateTime, endDateTime) => {
+	let remaining = endDateTime - startDateTime;
+	if (remaining < 0) {return false;}
+	let a_day = 24 * 60 * 60 * 1000;
+	let d = Math.floor(remaining / a_day);
+	let h = Math.floor((remaining % a_day) / (60 * 60 * 1000));
+	let m = Math.floor((remaining % a_day) / (60 * 1000)) % 60;
+	let s = Math.floor((remaining % a_day) / 1000) % 60 % 60;
+
+	$(".timer_count_down").text(padding_zero(h) + ':' + padding_zero(m) + ':' + padding_zero(s));
+	startDateTime.setSeconds(startDateTime.getSeconds() + 1);
+	setTimeout(function(){
+		end_traning_countdown(startDateTime, endDateTime);
+	}, 1000);
+}
+let padding_zero = (str) => {
+	return ("0" + str).slice(-2);
+}
+</script>
